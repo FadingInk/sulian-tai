@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="landing">
+  <div class="land-logo">📚</div>
+  <h1 class="land-title">速练台</h1>
+  <p class="land-slogan">一句话记忆，动手写出真本领。</p>
+  <p class="land-sub">选择题练“认得”，代码题练“写得出” —— 每一步都有实时反馈，做到真正会用。</p>
+  <a class="btn big land-cta" href="{{ url_for('hub') }}">进入平台</a>
+  <div class="feats">
+    <div class="feat"><span class="fi">💡</span><b>选择题 · 认得</b><span>选项+解析+记忆点，一句话掌握概念。</span></div>
+    <div class="feat"><span class="fi">⌨️</span><b>代码题 · 写得出</b><span>输入真代码，关键词智能判分给反馈。</span></div>
+    <div class="feat"><span class="fi">🔁</span><b>错题 · 反复练</b><span>错题收藏进本子，考试随机抽题再检验。</span></div>
+  </div>
+  <p class="land-meta">{{ total_sets }} 套题集 · {{ total_modules }} 个模块 · 持续扩充中</p>
+</section>
+{% endblock %}

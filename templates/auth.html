@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="pg">{{ mode }}</h1>
+{% if msg %}<p class="err">{{ msg }}</p>{% endif %}
+<form class="auth-box" method="post">
+  <label>用户名
+    <input type="text" name="username" required autocomplete="off">
+  </label>
+  <label>密码
+    <input type="password" name="password" required>
+  </label>
+  <button class="btn" type="submit">{{ mode }}</button>
+  {% if mode == '登录' %}
+    <p class="small">还没有账号？<a href="{{ url_for('register') }}">去注册</a></p>
+  {% else %}
+    <p class="small">已有账号？<a href="{{ url_for('login') }}">去登录</a></p>
+  {% endif %}
+</form>
+{% endblock %}

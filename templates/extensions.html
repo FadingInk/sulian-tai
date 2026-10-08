@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mod-head">
+  <p class="crumb"><a href="{{ url_for('set_page', sid=s.id) }}">← 返回 {{ s.title }}</a></p>
+  <h1 class="pg">🚀 提升 · 拓展</h1>
+  <p class="desc">把这份作业做得更完整、更高分的方向。理解规律后，遇到更大的数据/更复杂的问题也能举一反三。</p>
+</div>
+
+<section class="tips-block">
+  <div class="cards-row">
+    {% for e in ext %}
+    <div class="mini-card ext">
+      <h4>{{ e.cat }}</h4>
+      <code>{{ e.code }}</code>
+      <p>{{ e.note }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="quick">
+  <h2>巩固当前：回到模块继续刷</h2>
+  <div class="modules">
+    {% for m in modules %}
+    <a class="card" href="{{ url_for('module', mid=m.id) }}">
+      <div class="card-num">{{ m.num }}</div>
+      <h2>{{ m.name }}</h2>
+      <span class="level">{{ m.level }}</span>
+      <button class="go">去刷题 →</button>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

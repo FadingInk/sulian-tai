@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mod-head">
+  <p class="crumb"><a href="{{ url_for('set_page', sid=s.id) }}">← 返回 {{ s.title }}</a></p>
+  <h1>🎯 考试模拟 · 随机抽题</h1>
+  <p class="desc">从「{{ s.title }}」全部模块随机抽出 <b>{{ paper|length }}</b> 题（每次刷新都不同），闭卷作答后点「提交试卷」看成绩。
+     写代码题按关键词判分。</p>
+  <p class="warn">提示：选择题直接点选项；代码题在输入框写后点「记分」。全部做完再提交。</p>
+</div>
+
+<div class="exam-wrap" id="paper"></div>
+
+<div class="exam-bar">
+  <span id="exDone">已答 0 / {{ paper|length }}</span>
+  <button class="btn big" id="submitExam" onclick="grade()">提交试卷</button>
+  <button class="btn-link" onclick="location.reload()">换一套题重测</button>
+</div>
+
+<div class="result hidden" id="result"></div>
+
+<script>
+window.__PAPER__ = {{ paper | tojson | safe }};
+</script>
+<script src="{{ url_for('static', filename='exam.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hub-top">
+  <p class="crumb"><a href="{{ url_for('hub') }}">← 返回分类</a></p>
+  <h1>{{ c.icon }} {{ c.name }}</h1>
+  <p class="desc">{{ c.desc }}</p>
+</div>
+
+<section class="modules">
+  {% for s in sets %}
+  <a class="card {{ 'php' if s.placeholder }}" href="{{ url_for('set_page', sid=s.id) }}">
+    <div class="card-num">{{ '📬' if s.placeholder else '📖' }}</div>
+    <h2>{{ s.title }}</h2>
+    <span class="level">{{ s.tag }}</span>
+    <p class="warn">{{ s.days }}</p>
+    <p class="desc">{{ s.desc }}</p>
+    {% if s.placeholder %}
+    <p class="php-txt">📍 题集内容准备中，先保持期待</p>
+    {% else %}
+    <div class="progbar"><div class="prog-inner" style="width: {{ s.pct }}%"></div></div>
+    <p class="prog-txt">已答对 {{ s.done }} / {{ s.total }}（{{ s.pct }}%）</p>
+    {% endif %}
+    <button class="go">{{ '即将上线' if s.placeholder else '进入作品' }} →</button>
+  </a>
+  {% endfor %}
+</section>
+{% endblock %}

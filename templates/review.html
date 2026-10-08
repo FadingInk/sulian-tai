@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mod-head">
+  <p class="crumb"><a href="{{ url_for('set_page', sid=s.id) }}">← 返回 {{ s.title }}</a></p>
+  <h1 class="pg">📕 错题本 & 收藏</h1>
+</div>
+<p class="desc">做错或手动标记的题会进「错题」，点了收藏的题进「收藏」。点题目文字可回到对应模块。</p>
+
+<section class="tips-block">
+  <h2>❌ 错题（{{ errors|length }}）</h2>
+  {% if errors|length == 0 %}
+    <p class="hl">还没有错题，去刷题吧。</p>
+  {% else %}
+    {% for it in errors %}
+    <div class="rv-item">
+      <a class="rv-q" href="{{ url_for('module', mid=it.module) }}#q{{ it.qid }}">
+        <span class="tag">{{ it.mname }} #{{ it.qid+1 }}</span> {{ it.q.q }}
+      </a>
+      {% if it.q.type == 'choice' %}
+        <div class="rv-opts">
+          {% for opt in it.q.options %}
+          <div class="opt rv-opt {{ 'correct' if loop.index0 == it.q.answer }}">{{ opt }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <p class="plain">🧾 {{ it.q.explain }}</p>
+      {% if it.q.type=='code' %}
+        <details class="ans"><summary>参考答案</summary><pre>{{ it.q.answer }}</pre></details>
+      {% endif %}
+    </div>
+    {% endfor %}
+  {% endif %}
+</section>
+
+<section class="tips-block">
+  <h2>⭐ 收藏（{{ favs|length }}）</h2>
+  {% if favs|length == 0 %}
+    <p class="hl">还没有收藏，在刷题页点「⭐ 收藏」即可。</p>
+  {% else %}
+    {% for it in favs %}
+    <div class="rv-item">
+      <a class="rv-q" href="{{ url_for('module', mid=it.module) }}#q{{ it.qid }}">
+        <span class="tag">{{ it.mname }} #{{ it.qid+1 }}</span> {{ it.q.q }}
+      </a>
+      <p class="plain">🧾 {{ it.q.explain }}</p>
+    </div>
+    {% endfor %}
+  {% endif %}
+</section>
+{% endblock %}

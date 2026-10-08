@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mod-head">
+  <p class="crumb"><a href="{{ url_for('set_page', sid=s.id) }}">← 返回 {{ s.title }}</a></p>
+  <h1>{{ mod.num }} {{ mod.name }} <span class="level">{{ mod.level }}</span></h1>
+  <p class="desc">{{ mod.desc }}</p>
+</div>
+
+<!-- 知识速记卡 -->
+<div class="cards-row">
+  {% for card in mod.cards %}
+  <div class="mini-card">
+    <h4>{{ card.title }}</h4>
+    <code>{{ card.code }}</code>
+    <p>{{ card.note }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- 进度 -->
+<div class="progbar">
+  <div class="prog-inner" style="width: {{ done_pct }}%"></div>
+</div>
+<p class="prog-txt" id="progTxt">已答对 {{ done }} / {{ total }}（{{ done_pct }}%）</p>
+<p class="prog-tools">
+  {% if session.get('user') %}
+    <button class="btn-link" onclick="location.href='{{ url_for('reset', mid=mod.id) }}'">重置本模块进度</button>
+    <span class="small">（只统计你登录后答对的题）</span>
+  {% else %}
+    <span class="small">登录后才会累计进度 → <a href="{{ url_for('login') }}">登录</a></span>
+  {% endif %}
+</p>
+
+<!-- 刷题 -->
+<div class="quiz" id="quiz">
+  <div class="q-top">
+    <span class="q-no" id="qNo">1</span>
+    <span class="q-type" id="qType"></span>
+    <span class="q-actions">
+      <button class="btn-link act" id="actFav" onclick="flip('fav')">⭐ 收藏</button>
+      <button class="btn-link act" id="actErr" onclick="flip('err')">❌ 错题</button>
+    </span>
+  </div>
+  <p class="q-text" id="qText"></p>
+  <div class="q-opts" id="qOpts"></div>
+  <div class="q-code hidden" id="qCode">
+    <p class="code-hint" id="datapath"></p>
+    <textarea id="codeInput" rows="5" spellcheck="false"
+      placeholder="在这里亲手写代码（示例）：&#10;import pandas as pd&#10;data_1 = pd.read_excel(r'D:\dai_ma\泰迪\3 数据获取与处理\shops_review\shops.xlsx')"></textarea>
+    <button class="btn" id="runCode" onclick="submitCode()">▶ 运行判分</button>
+  </div>
+  <p class="feedback" id="feedback"></p>
+  <div class="q-nav">
+    <button class="btn" id="prev" onclick="nav(-1)" disabled>上一题</button>
+    <span class="q-count" id="qCount">1 / N</span>
+    <button class="btn" id="next" onclick="nav(1)">下一题 →</button>
+  </div>
+</div>
+
+<script>
+  window.__QUESTIONS__ = {{ mod.questions | tojson | safe }};
+  window.__MODULE__ = "{{ mod.id }}";
+  window.__DONE__ = {{ done }};
+  window.__TOTAL__ = {{ total }};
+  window.__FAVERR__ = {{ fav_err | tojson | safe }};
+  window.__LOGIN__ = {{ 1 if session.get('user') else 0 }};
+</script>
+{% endblock %}

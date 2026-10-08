@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mod-head">
+  <p class="crumb"><a href="{{ url_for('set_page', sid=s.id) }}">← 返回 {{ s.title }}</a></p>
+  <h1 class="pg">🧠 技巧 · 方法 · 快速记忆</h1>
+  <p class="desc">本套题集的专属速记口诀与考前清单。</p>
+</div>
+{% for sec in tip_sections %}
+<section class="tips-block">
+  <h2>{{ sec["cat"] }}</h2>
+  <ul>
+    {% for item in sec["items"] %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+</section>
+{% endfor %}
+
+<section class="tips-block">
+  <h2>回到模块</h2>
+  <div class="modules">
+    {% for m in modules %}
+    <a class="card" href="{{ url_for('module', mid=m.id) }}">
+      <h2>{{ m.num }} {{ m.name }}</h2>
+      <span class="level">{{ m.level }}</span>
+      <button class="go">开始刷题 →</button>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

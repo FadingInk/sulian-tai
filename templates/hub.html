@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hub-top">
+  <h1>选择你的领域</h1>
+  <p class="desc">每一类下面都有对应的练习题目，从易到难逐个拿下。</p>
+</div>
+
+<section class="cats">
+  {% for c in cats %}
+  <a class="cat {{ 'full' if loop.length == 1 }}" href="{{ url_for('category', cid=c.id) }}">
+    <span class="cat-icon-box">{{ c.icon }}</span>
+    <h2>{{ c.name }}</h2>
+    <p class="cat-tag">{{ c.tagline }}</p>
+    <p class="cat-desc">{{ c.desc }}</p>
+    <span class="cat-meta">{% if c.qcount %}{{ c.set_count }} 套题集 · {{ c.qcount }} 题{% else %}内容准备中{% endif %}</span>
+    <span class="go">进入</span>
+  </a>
+  {% endfor %}
+</section>
+{% endblock %}

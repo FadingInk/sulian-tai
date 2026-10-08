@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mod-head">
+  <p class="crumb"><a href="{{ url_for('category', cid=cat.id) if cat.id else url_for('hub') }}">← 返回 {{ cat.name }}</a></p>
+  <h1>{{ s.title }}</h1>
+  <span class="level">{{ s.tag }}</span>
+  <p class="desc">{{ s.desc }}</p>
+  <p class="warn">{{ s.days }}</p>
+</div>
+
+{% if s.placeholder %}
+<!-- 占位题集：内容尚未上线 -->
+<section class="quick php-block">
+  <h2>📍 内容准备中</h2>
+  <p>这个题集的题目正在编写与打磨，很快就能开始刷题。可以先回到分类，体验已经完整上线的领域。</p>
+  <p style="margin-top:14px"><a class="btn" href="{{ url_for('hub') }}">返回平台分类</a></p>
+</section>
+{% else %}
+<!-- 题集内专属功能 -->
+<div class="quick-grid">
+  <a class="tool" href="{{ url_for('exam', sid=s.id) }}"><b>🎯 考试模拟</b><br>随机抽整套题闭卷测</a>
+  <a class="tool" href="{{ url_for('set_review', sid=s.id) }}"><b>📕 错题本</b><br>集中复习做错的题</a>
+  <a class="tool" href="{{ url_for('set_tips', sid=s.id) }}"><b>🧠 技巧方法</b><br>口诀、易错点、临场应对</a>
+  <a class="tool" href="{{ url_for('set_extensions', sid=s.id) }}"><b>🚀 提升拓展</b><br>进阶分析与加分技巧</a>
+</div>
+
+<!-- 该题集下的模块 -->
+<section class="modules">
+  {% for item in mods %}
+  {% set m = item.mod %}
+  <a class="card {{ 'priority' if m.id=='pd' }}" href="{{ url_for('module', mid=m.id) }}">
+    <div class="card-num">{{ m.num }}</div>
+    <h2>{{ m.name }}</h2>
+    <span class="level">{{ m.level }}</span>
+    <p class="warn">{{ m.warn }}</p>
+    <p class="desc">{{ m.desc }}</p>
+    <div class="progbar"><div class="prog-inner" style="width: {{ item.pct }}%"></div></div>
+    <p class="prog-txt">已答对 {{ item.done }} / {{ item.total }}（{{ item.pct }}%）</p>
+    <button class="go">进入刷题 →</button>
+  </a>
+  {% endfor %}
+</section>
+{% endif %}
+{% endblock %}
